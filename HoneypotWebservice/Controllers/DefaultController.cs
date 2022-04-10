@@ -4,15 +4,16 @@ using System.Threading.Tasks;
 
 namespace HoneypotWebservice.Controllers
 {
-    [ApiController]
+    [Route("")]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    [ApiController]
+    public class DefaultController : Controller
     {
-        [HttpGet]
-        public async Task Get()
+        [Route("")]
+        public async Task Index()
         {
             var outputStream = this.Response.Body;
-            while(true)
+            while (true)
             {
                 await Task.Delay(5000);
                 byte[] bytes = System.Text.Encoding.ASCII.GetBytes("not found" + Environment.NewLine);

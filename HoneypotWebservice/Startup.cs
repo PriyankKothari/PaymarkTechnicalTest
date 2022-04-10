@@ -21,6 +21,7 @@ namespace HoneypotWebservice
         {
 
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HoneypotWebservice", Version = "v1" });
@@ -46,7 +47,8 @@ namespace HoneypotWebservice
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });
+                endpoints.MapControllerRoute(name: "default", pattern: "{controller=Default}/{action=Index}/{id?}");
+            });            
         }
     }
 }
