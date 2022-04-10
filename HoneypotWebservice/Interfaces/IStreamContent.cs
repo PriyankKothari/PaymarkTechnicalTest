@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HoneypotWebservice.Interfaces
@@ -11,6 +12,6 @@ namespace HoneypotWebservice.Interfaces
         /// <param name="responseStream">System.IO.Stream ResponseStream</param>
         /// <param name="streamContent">System.String StreamContent</param>
         /// <returns></returns>
-        Task WriteStreamAsync(Stream responseStream, string streamContent);
+        Task WriteStreamAsync(Stream responseStream, string streamContent, CancellationToken cancellationToken);
     }
 }

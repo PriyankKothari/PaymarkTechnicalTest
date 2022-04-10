@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using HoneypotWebservice.Interfaces;
 
 namespace HoneypotWebservice.Controllers
@@ -26,15 +29,38 @@ namespace HoneypotWebservice.Controllers
         /// <summary>
         /// Index action
         /// </summary>
+        /// <param name="dictionary">Dictionary of parameters</param>
+        /// <param name="cancellationToken">Cancellation Token</param>
         /// <returns></returns>
+        /// <response code = "200">Returns Ok</response>
+        /// <response code = "400">Returns BadRequest</response>
+        /// <response code = "500">Returns InternalServerError</response>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         [HttpGet]
-        [Route("")]
-        public async Task Index()
+        [Route("/{dictionary?}")]
+        public async Task<IActionResult> Index([FromQuery] IDictionary<string, string> dictionary, CancellationToken cancellationToken)
         {
-            while (true)
+            try
             {
-                await this._streamContent.WriteStreamAsync(this.Response.Body, "Not Found");
-            }
+                if (!cancellationToken.IsCancellationRequested)
+                {
+                    while (true)
+                    {
+                        await this._streamContent.WriteStreamAsync(this.Response.Body, "Not Found", cancellationToken);
+                    }
+                }
+                return Ok();
+            }    
+            catch(Exception exception)
+            {
+                // log exception
+                if (exception.GetType().Equals(typeof(OperationCanceledException)))
+                    return BadRequest();
+                else
+                    return Problem(detail: exception.StackTrace, title: exception.Message);
+            }            
         }
     }
 }
