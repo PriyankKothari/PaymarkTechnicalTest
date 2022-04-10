@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
+using HoneypotWebservice.Interfaces;
 
 namespace HoneypotWebservice.Controllers
 {
@@ -9,16 +9,19 @@ namespace HoneypotWebservice.Controllers
     [ApiController]
     public class DefaultController : Controller
     {
+        private readonly IStreamContent _streamContent;
+
+        public DefaultController(IStreamContent streamContent)
+        {
+            this._streamContent = streamContent;
+        }
+
         [Route("")]
         public async Task Index()
         {
-            var outputStream = this.Response.Body;
             while (true)
             {
-                await Task.Delay(5000);
-                byte[] bytes = System.Text.Encoding.ASCII.GetBytes("not found" + Environment.NewLine);
-                await outputStream.WriteAsync(bytes);
-                await outputStream.FlushAsync();
+                await this._streamContent.GetResponseStream(this.Response.Body, "Not Found");
             }
         }
     }
