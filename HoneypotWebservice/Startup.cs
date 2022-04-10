@@ -28,7 +28,11 @@ namespace HoneypotWebservice
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HoneypotWebservice", Version = "v1" });
             });
 
-            services.AddTransient<IStreamContent>(sc => new StreamContent(millisecondsDelay: 5000, includeNewLineCharacter: true));
+            services.AddTransient<IStreamContent>(sc =>
+                new StreamContent(
+                    millisecondsDelay: int.Parse(Configuration["MillisecondsDelay"]),
+                    includeNewLineCharacter: bool.Parse(Configuration["IncludeNewLineCharacter"])
+            ));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
