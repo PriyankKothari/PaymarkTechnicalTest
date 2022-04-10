@@ -21,7 +21,6 @@ namespace HoneypotWebservice
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
 
             services.AddSwaggerGen(c =>
@@ -29,7 +28,7 @@ namespace HoneypotWebservice
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HoneypotWebservice", Version = "v1" });
             });
 
-            services.AddTransient<IStreamContent, StreamContent>();
+            services.AddTransient<IStreamContent>(sc => new StreamContent(millisecondsDelay: 5000, includeNewLineCharacter: true));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
