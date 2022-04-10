@@ -5,7 +5,7 @@ Write a honeypot web service that accepts all GET requests and replies very slow
 This service sends a new line of text, "Not Found", once every 5 seconds.
 
 ## Deliverables
-<git repository link>
+https://github.com/PriyankKothari/PaymarkTechnicalTest.git
 
 ## How to build & run
 
